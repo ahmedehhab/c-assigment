@@ -101,6 +101,8 @@ Key getKey() {
         switch (ch) {
             case 13: return Key::Enter;
             case 27: return Key::Escape;
+            case 8: return Key::Backspace;   // Backspace
+            case 127: return Key::Backspace; // Alternative backspace
         }
     }
     return Key::Unknown;
@@ -159,6 +161,9 @@ Key getKey() {
     } else if (ch1 == 10 || ch1 == 13) {
         tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
         return Key::Enter;
+    } else if (ch1 == 127 || ch1 == 8) { // Backspace
+        tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
+        return Key::Backspace;
     }
     
     tcsetattr(STDIN_FILENO, TCSANOW, &oldt);

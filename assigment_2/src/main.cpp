@@ -17,7 +17,7 @@ void showBackButton() {
     bool waiting = true;
     while (waiting) {
         Key key = getKey();
-        if (key == Key::Enter) {
+        if (key == Key::Enter || key == Key::Backspace) {
             waiting = false;
         }
         delay(50);
@@ -85,10 +85,12 @@ int main() {
         
         switch (key) {
             case Key::Up:
+            case Key::Left:  // Left = Up
                 selected = (selected - 1 + menuItems.size()) % menuItems.size();
                 break;
                 
             case Key::Down:
+            case Key::Right:  // Right = Down
                 selected = (selected + 1) % menuItems.size();
                 break;
                 

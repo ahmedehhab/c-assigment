@@ -39,6 +39,7 @@ enum class Key {
     Escape,
     Home,
     End,
+    Backspace,
     Unknown
 };
 
