@@ -99,9 +99,11 @@ void delay(int milliseconds) {
 Key getKey() {
 #ifdef _WIN32
     int ch = _getch();
-    if (ch == 0 || ch == 224) { // Special key prefix
-        ch = _getch();
-        switch (ch) {
+
+    // Special keys (arrows, home, end)
+    if (ch == 0 || ch == 224) {
+        int code = _getch();
+        switch (code) {
             case 72: return Key::Up;
             case 80: return Key::Down;
             case 75: return Key::Left;
@@ -109,79 +111,67 @@ Key getKey() {
             case 71: return Key::Home;
             case 79: return Key::End;
         }
-    } else {
-        switch (ch) {
-            case 13: return Key::Enter;
-            case 27: return Key::Escape;
-            case 8: return Key::Backspace;   // Backspace
-            case 127: return Key::Backspace; // Alternative backspace
-        }
+        return Key::Unknown;
+    }
+
+    // Normal keys
+    switch (ch) {
+        case 13:  return Key::Enter;
+        case 27:  return Key::Escape;
+        case 8:
+        case 127: return Key::Backspace;
     }
     return Key::Unknown;
+
 #else
+    // ---------------- Linux Implementation ----------------
     struct termios oldt, newt;
     tcgetattr(STDIN_FILENO, &oldt);
+
     newt = oldt;
     newt.c_lflag &= ~(ICANON | ECHO);
-    newt.c_cc[VMIN] = 1;
-    newt.c_cc[VTIME] = 0;
     tcsetattr(STDIN_FILENO, TCSANOW, &newt);
 
     int ch1 = getchar();
 
-    if (ch1 == 27) { // ESC sequence
-        struct termios temp = newt;
-        temp.c_cc[VMIN] = 0;
-        temp.c_cc[VTIME] = 1;
-        tcsetattr(STDIN_FILENO, TCSANOW, &temp);
-        
+    // Escape sequence: ESC [ X
+    if (ch1 == 27) { 
         int ch2 = getchar();
-        if (ch2 == EOF || ch2 == -1) {
-            tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
-            return Key::Escape;
-        }
-        if (ch2 == '[') {
-            int ch3 = getchar();
-            if (ch3 == 'A' || ch3 == 'B' || ch3 == 'C' || ch3 == 'D') {
-                tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
-                switch (ch3) {
-                    case 'A': return Key::Up;
-                    case 'B': return Key::Down;
-                    case 'C': return Key::Right;
-                    case 'D': return Key::Left;
-                }
-            } else if (ch3 == 'H') {
-                tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
-                return Key::Home;
-            } else if (ch3 == 'F') {
-                tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
-                return Key::End;
-            } else if (ch3 >= '1' && ch3 <= '9') {
-                int ch4 = getchar();
-                tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
-                if (ch3 == '1' && ch4 == '~') return Key::Home;
-                if (ch3 == '4' && ch4 == '~') return Key::End;
-            }
-        } else if (ch2 == 'O') {
-            int ch3 = getchar();
-            tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
-            if (ch3 == 'H') return Key::Home;
-            if (ch3 == 'F') return Key::End;
-        }
+        int ch3 = getchar();
+
         tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
+
+        if (ch2 == '[') {
+            switch (ch3) {
+                case 'A': return Key::Up;
+                case 'B': return Key::Down;
+                case 'C': return Key::Right;
+                case 'D': return Key::Left;
+                case 'H': return Key::Home;
+                case 'F': return Key::End;
+            }
+        }
         return Key::Escape;
-    } else if (ch1 == 10 || ch1 == 13) {
+    }
+
+    // Enter
+    if (ch1 == 10 || ch1 == 13) {
         tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
         return Key::Enter;
-    } else if (ch1 == 127 || ch1 == 8) { // Backspace
+    }
+
+    // Backspace
+    if (ch1 == 127 || ch1 == 8) {
         tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
         return Key::Backspace;
     }
-    
+
     tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
     return Key::Unknown;
+
 #endif
 }
+
 
 void hideCursor() {
 #ifdef _WIN32
@@ -236,7 +226,7 @@ int getConsoleHeight() {
 // Helper function to clear input buffer
 void clearInputBuffer() {
     std::cin.clear();
-    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    std::cin.ignore(1000, '\n');
 }
 
 // Show back button and wait for user input

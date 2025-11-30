@@ -10,6 +10,9 @@ int main(){
   cout<<x<<' '<<y<<'\n';
   swap_using_mul(x,y);
   cout<<x<<' '<<y<<'\n';
+  swap_using_xor(x,y);
+  cout<<x<<' '<<y<<'\n';
+  
 
     return 0;
 }
