@@ -1,6 +1,7 @@
 #ifndef STRING_H
 #define STRING_H
-
+#include <iostream>
+using namespace std;
 class String{
 private :
 int capacity;
@@ -53,7 +54,8 @@ void swap(String &a,String &b);
 String substr(int from , int to) const;
 bool include (const char * s) const;
 bool isPalindrome()const;
-
+friend  ostream& operator<<( ostream& out,  const String& s);
+friend istream& operator>>( istream& in,  String& s);
 
 };
 

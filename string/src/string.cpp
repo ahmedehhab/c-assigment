@@ -390,3 +390,18 @@ bool String::isPalindrome()const{
     }
     return true;
 }
+
+   ostream& operator<<(ostream& out,  const String& s) {
+    for (int i = 0; i < s.length; i++) {
+        out << s.arr[i];
+    }
+    return out;
+}
+
+  istream& operator>>( istream& in, String& s) {
+    s.clear();  
+    char temp[1024];  
+    in >> temp;       
+    s = temp;        
+    return in;
+}
