@@ -51,6 +51,8 @@ void insert(int pos, const char * s);
 void erase(int from ,int to);
 void reverse();
 void swap(String &a,String &b);
+String& toLower();
+String& toUpper();
 String substr(int from , int to) const;
 bool include (const char * s) const;
 bool isPalindrome()const;

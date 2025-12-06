@@ -58,7 +58,7 @@ int main(){
 // String p="abcdcba";
 // cout<<p.isPalindrome();
 cin>>s;
-cout<<s;
+cout<<s.toLower()<<"           "<<s.toUpper();
 
     return 0;
 }

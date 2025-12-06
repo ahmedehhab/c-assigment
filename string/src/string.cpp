@@ -336,6 +336,26 @@ void String::erase(int from ,int to ){
   this->arr[this->length]='\0';  
 }
 
+String& String::toLower(){
+    for(int i=0;i<this->length;i++){
+        if(this->arr[i]>='A'&&this->arr[i]<='Z'){
+            this->arr[i]-='A';
+            this->arr[i]+='a';
+        }
+    }
+    return *this;
+}
+
+String& String::toUpper(){
+    for(int i=0;i<this->length;i++){
+        if(this->arr[i]>='a'&&this->arr[i]<='z'){
+            this->arr[i]-='a';
+            this->arr[i]+='A';
+        }
+    }
+    return *this;
+}
+
 String String::substr(int from, int to) const{
  if(from>=this->length || from<0 ||to>this->length ||to<0) throw std::runtime_error("this range is out of boud ");
  String temp;
