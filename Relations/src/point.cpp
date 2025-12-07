@@ -14,6 +14,14 @@ int Point::gety() {
     return y;
 }
 
-void Point::draw(){
-    cout<<this->x<<"  "<<this->y;
-}
+// void Point::draw(){
+//     cout<<this->x<<"  "<<this->y;
+// }
+
+
+void Point:: draw(sf::RenderWindow &window) {
+      sf::CircleShape p(3);       
+        p.setFillColor(sf::Color::White);
+        p.setPosition(x, y);
+        window.draw(p);
+    };

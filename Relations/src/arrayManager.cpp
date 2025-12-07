@@ -11,8 +11,9 @@ void resize(Shape**& shapes, int& capacity, int size) {
     capacity = newCapacity; 
 }
 
-void addShape(Shape**& shapes ,Shape*& obj,int& capacity, int index){
+void addShape(Shape**& shapes ,Shape*& obj,int& capacity, int &index){
   
   if(index==capacity)resize(shapes,capacity,index);
-   shapes[index++]=obj;
+   shapes[index]=obj;
+   index++;
 }

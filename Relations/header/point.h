@@ -12,7 +12,7 @@ public:
 
     int getx();
     int gety();
-    void draw() override;
+    void draw(sf::RenderWindow &window) override;
 };
 
 #endif

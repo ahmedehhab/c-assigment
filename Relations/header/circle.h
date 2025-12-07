@@ -7,7 +7,7 @@ class Circle : public Shape {
     Point center;
     int reduis;
     Circle (int x,int y ,int reduis);
-    void draw() override;
+    void draw(sf::RenderWindow &window) override;
 };
 
 #endif
