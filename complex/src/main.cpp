@@ -39,7 +39,7 @@ int main(){
     // cout<<c[0]<<'\n';
     // cout<<c[1]<<'\n';
     // cout<<c[2]<<'\n';
-
+    cout<<(string)b;
 
     return 0;
 }

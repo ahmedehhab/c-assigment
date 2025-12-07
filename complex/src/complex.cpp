@@ -1,5 +1,7 @@
 #include "../header/complex.h"
-
+#include<cmath>
+#include<iostream>
+using namespace std;
 Complex::Complex(){
     this->real=0;
     this->imag=0;
@@ -171,3 +173,27 @@ Complex& Complex::operator =(const Complex &c){
          if(index==1)return this->imag;
         throw std::string("out of bound");
     }
+
+
+
+
+    Complex::operator double() const {
+    return sqrt(real * real + imag * imag);
+}
+
+Complex::operator int() const {
+    return (int)sqrt(real * real + imag * imag);
+}
+
+
+
+Complex:: operator string()const {
+    string s ;
+   s+=to_string(this->real);
+   if(this->imag){
+    s+='+';
+    s+=to_string(this->imag) ;
+   }
+   s+='i';
+    return s;
+}

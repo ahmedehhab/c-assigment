@@ -1,4 +1,5 @@
 #include <iostream>
+using namespace std;
 #ifndef COMPLEX_H
 #define COMPLEX_H
 class Complex
@@ -33,6 +34,9 @@ public:
     Complex& operator -= (const Complex &c);
     Complex& operator *= (const Complex &c);
     Complex& operator /= (const Complex &c);
+     operator double() const;
+     operator int() const;
+     operator string()const;
     
     //unary operator 
     Complex& operator ++(); //++c;
@@ -53,6 +57,7 @@ public:
     bool operator>=(const Complex& c) const;
 
     double operator[](int index);
+    
     
 };
 
